@@ -6,6 +6,7 @@ import time
 import random
 import decimal
 import _thread
+import iRobot as bot
 
 
 SERVO_PIN=15
@@ -53,11 +54,13 @@ IN4=18
 
 distance=0
 
+DISCOLED=False
+
 def headlightOn():
     gpio.output(HEADLIGHT,True)
     
 def headlightOff():
-    gpio.output(HEADLIGHT,True)
+    gpio.output(HEADLIGHT,False)
     
 def turnSensor():
     servo1.start(0)
@@ -105,7 +108,7 @@ def setupLED():
     gpio.setup(dataPin, gpio.OUT)
     gpio.setup(latchPin, gpio.OUT)
     gpio.setup(clockPin, gpio.OUT)
-    gpio.setup(37,gpio.OUT)
+    gpio.setup(HEADLIGHT,gpio.OUT)
 #shiftOut function, use bit serial transmission. 
 def shiftOut(dPin,cPin,order,val):
     for i in range(0,8):
@@ -117,7 +120,8 @@ def shiftOut(dPin,cPin,order,val):
         gpio.output(cPin,gpio.HIGH);
 
 def loopLED():
-    while True:
+    global DISCOLED
+    while DISCOLED:
 #         gpio.output(37,True)
 #         time.sleep(.10)
 #         gpio.output(37,False)
@@ -277,28 +281,32 @@ def run():
             time.sleep(0.5)
             headlightOff()
 
-camera = PiCamera()
-camera.start_preview(alpha=200)
-camera.resolution = (1920, 1080)
-camera.framerate = 15
-camera.start_preview()
-camera.start_recording('/home/pi/Desktop/video.h264')
+# camera = PiCamera()
+# camera.start_preview(alpha=200)
+# camera.resolution = (1920, 1080)
+# camera.framerate = 15
+# camera.start_preview()
+# camera.start_recording('/home/pi/Desktop/video.h264')
 
-setupLED()
-initMotors()
-#thread1=_thread.start_new_thread(turnSensor,())
-thread2=_thread.start_new_thread(loopLED,())
-thread3=_thread.start_new_thread(sonarDistance,())
-turnSensorByDegree(7)
-time.sleep(2)
 
-thread4=_thread.start_new_thread(run,())
-
-time.sleep(60)
-camera.stop_preview()
-camera.stop_recording()
-while True:
+def startBot():
+    
+    setupLED()
+    initMotors()
+    #thread1=_thread.start_new_thread(turnSensor,())
+    #thread2=_thread.start_new_thread(loopLED,())
+    thread3=_thread.start_new_thread(sonarDistance,())
+    turnSensorByDegree(7)
+    time.sleep(2)
+    while True:
     #print ("distance ",distance)
-    time.sleep(1)
+        time.sleep(1)
+
+#thread4=_thread.start_new_thread(run,())
+
+
+# camera.stop_preview()
+# camera.stop_recording()
+
 
 
