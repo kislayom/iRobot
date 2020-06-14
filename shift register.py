@@ -1,3 +1,4 @@
+#!/usr/bin/python3.7
 import RPi.GPIO as GPIO
 import time
 #Defines the data bit that is transmitted preferentially in the shiftOut function.
