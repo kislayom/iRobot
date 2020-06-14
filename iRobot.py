@@ -234,6 +234,17 @@ def halt():
     gpio.output(ENB,False)
     gpio.output(ENA,False)
 
+def moveStraightDur(executionTime):
+    global distance
+    startTime=time.time()
+    moveStraight()
+    gap=0
+    while(distance>MIN_DIST and gap<executionTime):
+        gap=time.time()-startTime
+    halt()
+    
+    
+
 def run():
     count=0
     time1=0

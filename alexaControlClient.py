@@ -1,6 +1,7 @@
 import socket
 import json
 import iRobot as bot
+import time
 
 HOST = '192.168.0.108'  # The server's hostname or IP address
 PORT = 11001        # The port used by the server
@@ -36,7 +37,9 @@ EXITBOT='EXITBOT'
 #Dummy json data
 #{"action":"","timeStamp":1592130955041,"value":"","outDist":"20","outTemp":"","outHumid":""}
 
-#bot.startBot()
+bot.startBot()
+
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
     while True:      
@@ -55,6 +58,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print('Move straight till obstacle is detected')
         elif command==MVS:
             print('Move straight untill obstable is detected or x seconds elapsed')
+            duration=jsonData["value"]
+            bot.moveStraightDur(duration)
         elif command==MVSO:
             print(command)
         elif command==MVL:
