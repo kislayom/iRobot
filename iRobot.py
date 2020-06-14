@@ -167,7 +167,7 @@ def sonarDistance():
         distance=round(distance,2)
         time.sleep(.3)
         
-        print(distance)
+        #print(distance)
         
 def initMotors():
     print("init")

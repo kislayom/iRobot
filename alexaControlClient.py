@@ -2,7 +2,7 @@ import socket
 import json
 import iRobot as bot
 
-HOST = '127.0.0.1'  # The server's hostname or IP address
+HOST = '192.168.0.108'  # The server's hostname or IP address
 PORT = 11001        # The port used by the server
 
 MV='MV'
@@ -36,13 +36,13 @@ EXITBOT='EXITBOT'
 #Dummy json data
 #{"action":"","timeStamp":1592130955041,"value":"","outDist":"20","outTemp":"","outHumid":""}
 
-bot.startBot()
+#bot.startBot()
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
     while True:      
         data = s.recv(2048)
         jsonData=json.loads(data)
-        print(data )
+        print(data)
         command=jsonData["action"]
         #Exit the program if command is Exit bot which is abbreviated as EXITBOT
         if command=='EXITBOT':
