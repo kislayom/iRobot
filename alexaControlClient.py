@@ -2,6 +2,7 @@ import socket
 import json
 import iRobot as bot
 import time
+import _thread
 
 HOST = '192.168.0.108'  # The server's hostname or IP address
 PORT = 11001        # The port used by the server
@@ -38,18 +39,23 @@ EXITBOT='EXITBOT'
 #{"action":"","timeStamp":1592130955041,"value":"","outDist":"20","outTemp":"","outHumid":""}
 
 bot.startBot()
-
+time.sleep(2)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
-    while True:      
-        data = s.recv(2048)
+    while True:
+        time.sleep(0.1)
+        print("waiting for command from server")
+        data = s.recv(1024)
+        
+        print("Received",data)
         jsonData=json.loads(data)
         print(data)
         command=jsonData["action"]
         #Exit the program if command is Exit bot which is abbreviated as EXITBOT
-        if command=='EXITBOT':
+        if command==EXITBOT:
             print('Exiting program')
+            bot.halt()
             break
         
         #implement switch case on commands:
@@ -59,7 +65,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         elif command==MVS:
             print('Move straight untill obstable is detected or x seconds elapsed')
             duration=jsonData["value"]
-            bot.moveStraightDur(duration)
+            print(" Duration=",duration)
+            intdur=int(duration)
+            thread3=_thread.start_new_thread(bot.moveStraightDur,(intdur,))
+            #bot.moveStraightDur(int(duration))
         elif command==MVSO:
             print(command)
         elif command==MVL:

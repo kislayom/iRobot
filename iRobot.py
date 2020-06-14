@@ -55,6 +55,7 @@ IN4=18
 distance=0
 
 DISCOLED=False
+GLOBAL_STOP=False
 
 def headlightOn():
     gpio.output(HEADLIGHT,True)
@@ -239,8 +240,10 @@ def moveStraightDur(executionTime):
     startTime=time.time()
     moveStraight()
     gap=0
-    while(distance>MIN_DIST and gap<executionTime):
+    while(distance>MIN_DIST and gap<executionTime and not GLOBAL_STOP):
         gap=time.time()-startTime
+        #print(gap," ", distance)
+        time.sleep(0.2)
     halt()
     
     
@@ -308,10 +311,7 @@ def startBot():
     #thread2=_thread.start_new_thread(loopLED,())
     thread3=_thread.start_new_thread(sonarDistance,())
     turnSensorByDegree(7)
-    time.sleep(2)
-    while True:
-    #print ("distance ",distance)
-        time.sleep(1)
+
 
 #thread4=_thread.start_new_thread(run,())
 
