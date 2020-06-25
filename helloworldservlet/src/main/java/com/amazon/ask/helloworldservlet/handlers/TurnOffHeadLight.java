@@ -16,12 +16,15 @@ package com.amazon.ask.helloworldservlet.handlers;
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
+import com.bean.MessageBean;
+import com.factory.iot.SendMessageToAlexa;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static com.amazon.ask.request.Predicates.intentName;
 
-public class HelloWorldIntentHandler implements RequestHandler {
+public class TurnOffHeadLight implements RequestHandler {
 
     @Override
     public boolean canHandle(HandlerInput input) {
@@ -31,10 +34,17 @@ public class HelloWorldIntentHandler implements RequestHandler {
     @Override
     public Optional<Response> handle(HandlerInput input) {
     	
-        String speechText = "Radhe Krishna, Good night!";
-       return input.getResponseBuilder()
-                .withSpeech(speechText)
-                .withSimpleCard("HelloWorld", speechText)
-                .build();
+        String speechText = "Turning headlight off";
+        MessageBean msg = new MessageBean();
+		msg.setAction("HOFF");
+		MessageBean responsePi=null;
+		try {
+			responsePi=SendMessageToAlexa.send(msg);
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return input.getResponseBuilder().withSpeech(speechText).withSimpleCard("TurnOffHeadLight", speechText).build();
     }
 }

@@ -16,25 +16,36 @@ package com.amazon.ask.helloworldservlet.handlers;
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
+import com.bean.MessageBean;
+import com.factory.iot.SendMessageToAlexa;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static com.amazon.ask.request.Predicates.intentName;
 
-public class HelloWorldIntentHandler implements RequestHandler {
+public class MoveRight implements RequestHandler {
 
     @Override
     public boolean canHandle(HandlerInput input) {
-        return input.matches(intentName("HelloWorldIntent"));
+        return input.matches(intentName("MoveRight"));
     }
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
     	
-        String speechText = "Radhe Krishna, Good night!";
-       return input.getResponseBuilder()
-                .withSpeech(speechText)
-                .withSimpleCard("HelloWorld", speechText)
-                .build();
+    	String speechText = "Turning Right";
+    	
+		MessageBean msg = new MessageBean();
+		msg.setAction("MVR");
+		MessageBean responsePi=null;
+		try {
+			responsePi=SendMessageToAlexa.send(msg);
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return input.getResponseBuilder().withSpeech(speechText).withSimpleCard("MoveRight", speechText).build();
     }
 }
