@@ -10,6 +10,7 @@ public class PlutoServerMain {
 
 		PiServer piServer = new PiServer();
 		AlexaServer alexaServer= new AlexaServer(piServer);
+		piServer.setAlexaServ(alexaServer);
 		
 		Thread tPi= new Thread(piServer);
 		Thread tAlexa= new Thread(alexaServer);

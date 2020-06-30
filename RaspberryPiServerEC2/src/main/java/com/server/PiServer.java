@@ -55,6 +55,7 @@ public class PiServer implements Runnable {
 	}
 
 	public MessageBean talkwithPi(MessageBean bean) throws IOException {
+		System.out.println("Got message from Alexa on pi");
 		if (isConnected()) {
 			BufferedWriter writerRasp = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
 			BufferedReader readerRasp = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));

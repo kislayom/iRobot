@@ -41,13 +41,26 @@ public class AlexaServer implements Runnable {
 
 				ObjectMapper mapper = new ObjectMapper();
 				MessageBean bean = mapper.readValue(commandFromLexa, MessageBean.class);
-				MessageBean beanPi = piServ.talkwithPi(bean);
-				// write data to raspberry pi
-				writerAlexa.write(mapper.writeValueAsString(beanPi) + "\n");
-				writerAlexa.flush();
-				writerAlexa.close();
-				readerAlexa.close();
-				socketAlexa.close();
+				if(isConnected()) {
+					System.out.println("Found connected with Pi trying to send message");
+					MessageBean beanPi = piServ.talkwithPi(bean);
+					// write data to raspberry pi
+					writerAlexa.write(mapper.writeValueAsString(beanPi) + "\n");
+					writerAlexa.flush();
+					writerAlexa.close();
+					readerAlexa.close();
+					socketAlexa.close();
+				}else {
+					bean.setOutMSG("Pi not connected");
+					// write data to raspberry pi
+					writerAlexa.write(mapper.writeValueAsString(bean) + "\n");
+					writerAlexa.flush();
+					writerAlexa.close();
+					readerAlexa.close();
+					socketAlexa.close();
+				}
+				
+				
 			} catch (Exception exc) {
 				exc.printStackTrace();
 			}
