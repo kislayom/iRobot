@@ -1,4 +1,4 @@
-package com.server;
+package com.simulator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
