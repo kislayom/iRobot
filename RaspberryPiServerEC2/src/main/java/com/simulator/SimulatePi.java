@@ -16,9 +16,10 @@ public class SimulatePi {
 	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException {
 
 		Scanner scan = new Scanner(System.in);
-
+		Socket sock = new Socket("anilexa.com", 11001);
+		System.out.println("Connected with server");
 		while (true) {
-			Socket sock = new Socket("anilexa.com", 11001);
+			
 			BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 			BufferedReader readerPi = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
@@ -32,7 +33,7 @@ public class SimulatePi {
 
 			writerPi.flush();
 System.out.println("completed writing from remote device");
-			sock.close();
+			
 			//Thread.sleep(2000);
 			// command=scan.nextLine();
 		}
