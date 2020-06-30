@@ -23,6 +23,7 @@ public class SimulatePi {
 			BufferedReader readerPi = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
 			String command = readerPi.readLine();
+			System.out.println("Found command "+command);
 			ObjectMapper mapper = new ObjectMapper();
 			MessageBean bean = mapper.readValue(command, MessageBean.class);
 			bean.setOutMSG("Pi modified message : Kislay");
@@ -30,7 +31,7 @@ public class SimulatePi {
 			System.out.println("Write to server complete");
 
 			writerPi.flush();
-
+System.out.println("completed writing from remote device");
 			sock.close();
 			//Thread.sleep(2000);
 			// command=scan.nextLine();
