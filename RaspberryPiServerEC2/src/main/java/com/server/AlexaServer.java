@@ -22,7 +22,7 @@ public class AlexaServer implements Runnable {
 	}
 
 	public boolean isConnected() {
-		return socketAlexa != null && socketAlexa.isConnected() ? true : false;
+		return piServ.isConnected();
 	}
 
 	@Override
