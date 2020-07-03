@@ -40,7 +40,9 @@ public class PiServer implements Runnable {
 				socketPi = listenerPi.accept();
 				System.out.println("Pi Connected!!");
 				BufferedReader readerPi = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
-
+				BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
+				writerPi.write("hello Pi! ");
+				writerPi.newLine();
 				OUTPUT = readerPi.readLine();
 				while (OUTPUT != null) {
 					System.out.println("Pi Server received " + OUTPUT);

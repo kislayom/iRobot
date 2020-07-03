@@ -23,14 +23,14 @@ public class SimulatePi {
 				BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 				BufferedReader readerPi = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
-				//String command = readerPi.readLine();
-				//System.out.println("Found command " + command);
+				String command = readerPi.readLine();
+				System.out.println("Found command " + command);
 				//ObjectMapper mapper = new ObjectMapper();
 				//MessageBean bean = mapper.readValue(command, MessageBean.class);
 				//bean.setOutMSG("Pi modified message : Kislay");
 				//writerPi.write(mapper.writeValueAsString(bean) + "\n");
 				
-				writerPi.write("{\"action\":\"MV\",\"timeStamp\":1593773544603,\"value\":\"\",\"outMSG\":\"\"}\n");
+				//writerPi.write("{\"action\":\"MV\",\"timeStamp\":1593773544603,\"value\":\"\",\"outMSG\":\"\"}\n");
 				writerPi.write("{\"action\":\"MV\",\"timeStamp\":1593773544603,\"value\":\"\",\"outMSG\":\"\"}\n");
 				System.out.println("Write to server complete");
 
@@ -39,6 +39,7 @@ public class SimulatePi {
 
 				// Thread.sleep(2000);
 				// command=scan.nextLine();
+				Thread.sleep(5000);
 			}
 		} finally {
 			sock.close();
