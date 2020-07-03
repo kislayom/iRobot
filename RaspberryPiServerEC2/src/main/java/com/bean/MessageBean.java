@@ -51,6 +51,13 @@ public class MessageBean {
 	public void setOutMSG(String outMSG) {
 		this.outMSG = outMSG;
 	}
+	@Override
+	public String toString() {
+		return "MessageBean [action=" + action + ", timeStamp=" + timeStamp + ", value=" + value + ", outMSG=" + outMSG
+				+ ", getAction()=" + getAction() + ", getTimeStamp()=" + getTimeStamp() + ", getValue()=" + getValue()
+				+ ", getOutMSG()=" + getOutMSG() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
+	}
 
 
 

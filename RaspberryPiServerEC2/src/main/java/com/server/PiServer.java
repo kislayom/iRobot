@@ -45,7 +45,8 @@ public class PiServer implements Runnable {
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				socketPi=null;
+				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,20 +56,22 @@ public class PiServer implements Runnable {
 	}
 
 	public MessageBean talkwithPi(MessageBean bean) throws IOException {
-		System.out.println("Got message from Alexa on pi");
+		System.out.println("PiServer : Got message from Alexa on pi "+bean);
 		if (isConnected()) {
+			System.out.println("PiServer : Connected state "+bean);
 			BufferedWriter writerRasp = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
 			BufferedReader readerRasp = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
-
+			
 			ObjectMapper mapper = new ObjectMapper();
+			System.out.println(mapper.writeValueAsString(bean) + "\n");
 			writerRasp.write(mapper.writeValueAsString(bean) + "\n");
 			String responseFromPi = readerRasp.readLine();
 			MessageBean beanPi = mapper.readValue(responseFromPi, MessageBean.class);
 			return beanPi;
 		} else {
-			MessageBean beanPi = new MessageBean();
-			beanPi.setOutMSG("Pi is not connected!");
-			return beanPi;
+			System.out.println("PiServer : disconnected state "+bean);
+			bean.setOutMSG("PiServer : Pi is not connected!");
+			return bean;
 		}
 	}
 
