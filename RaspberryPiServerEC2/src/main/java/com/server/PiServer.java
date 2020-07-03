@@ -59,13 +59,16 @@ public class PiServer implements Runnable {
 		System.out.println("PiServer : Got message from Alexa on pi "+bean);
 		if (isConnected()) {
 			System.out.println("PiServer : Connected state "+bean);
-			BufferedWriter writerRasp = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
-			BufferedReader readerRasp = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
 			
+			
+			BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
+			BufferedReader readerPi = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
+			
+			System.out.println("PiServer :  Stream initiated");
 			ObjectMapper mapper = new ObjectMapper();
 			System.out.println(mapper.writeValueAsString(bean) + "\n");
-			writerRasp.write(mapper.writeValueAsString(bean) + "\n");
-			String responseFromPi = readerRasp.readLine();
+			writerPi.write(mapper.writeValueAsString(bean) + "\n");
+			String responseFromPi = readerPi.readLine();
 			MessageBean beanPi = mapper.readValue(responseFromPi, MessageBean.class);
 			return beanPi;
 		} else {
