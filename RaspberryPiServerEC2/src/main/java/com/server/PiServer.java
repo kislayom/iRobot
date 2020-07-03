@@ -66,8 +66,8 @@ public class PiServer implements Runnable {
 			
 			System.out.println("PiServer :  Stream initiated");
 			ObjectMapper mapper = new ObjectMapper();
-			System.out.println(mapper.writeValueAsString(bean) + "\n");
-			writerPi.write(mapper.writeValueAsString(bean) + "\n");
+			System.out.println(mapper.writeValueAsString(bean) + "\n\r");
+			writerPi.write(mapper.writeValueAsString(bean) + "\n\r");
 			String responseFromPi = readerPi.readLine();
 			MessageBean beanPi = mapper.readValue(responseFromPi, MessageBean.class);
 			return beanPi;
