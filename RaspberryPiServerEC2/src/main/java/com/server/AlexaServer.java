@@ -41,7 +41,7 @@ public class AlexaServer implements Runnable {
 
 				ObjectMapper mapper = new ObjectMapper();
 				MessageBean bean = mapper.readValue(commandFromLexa, MessageBean.class);
-				if(isConnected()) {
+				if(piServ.isConnected()) {
 					System.out.println("Found connected with Pi trying to send message");
 					MessageBean beanPi = piServ.talkwithPi(bean);
 					// write data to raspberry pi

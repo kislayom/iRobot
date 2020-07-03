@@ -15,16 +15,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SimulatePi {
 	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException {
 
-		Scanner scan = new Scanner(System.in);
 		Socket sock = new Socket("anilexa.com", 11001);
 		System.out.println("Connected with server");
 		while (true) {
-			
+
 			BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 			BufferedReader readerPi = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
 			String command = readerPi.readLine();
-			System.out.println("Found command "+command);
+			System.out.println("Found command " + command);
 			ObjectMapper mapper = new ObjectMapper();
 			MessageBean bean = mapper.readValue(command, MessageBean.class);
 			bean.setOutMSG("Pi modified message : Kislay");
@@ -32,9 +31,9 @@ public class SimulatePi {
 			System.out.println("Write to server complete");
 
 			writerPi.flush();
-System.out.println("completed writing from remote device");
-			
-			//Thread.sleep(2000);
+			System.out.println("completed writing from remote device");
+
+			// Thread.sleep(2000);
 			// command=scan.nextLine();
 		}
 
