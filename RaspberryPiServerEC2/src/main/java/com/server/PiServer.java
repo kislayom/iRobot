@@ -18,18 +18,19 @@ public class PiServer implements Runnable {
 	private ServerSocket listenerPi;
 	private Socket socketPi;
 	private AlexaServer alexaServ;
+	private String OUTPUT;
 
 	public PiServer() throws IOException {
 		this.listenerPi = new ServerSocket(11001);
-	
+		OUTPUT = "NA";
 	}
-	
+
 	public void setAlexaServ(AlexaServer alexaServ) {
 		this.alexaServ = alexaServ;
 	}
 
 	public boolean isConnected() {
-		return (socketPi != null && socketPi.isConnected()) ? true : false;
+		return (socketPi != null) ? true : false;
 	}
 
 	@Override
@@ -38,42 +39,45 @@ public class PiServer implements Runnable {
 			try {
 				socketPi = listenerPi.accept();
 				System.out.println("Pi Connected!!");
-				while (isConnected()) {
-					Thread.sleep(300);
+				BufferedReader readerPi = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
+
+				OUTPUT = readerPi.readLine();
+				while (OUTPUT != null) {
+					System.out.println("Pi Server received " + OUTPUT);
 				}
-				System.out.println("Pi Disconnected!!");
+				OUTPUT = readerPi.readLine();
+
+				if (OUTPUT == null) {
+					socketPi = null;
+					OUTPUT = "NA";
+				}
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				socketPi=null;
-				
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+				socketPi = null;
 
+			}
+
+		}
 	}
 
 	public MessageBean talkwithPi(MessageBean bean) throws IOException {
-		System.out.println("PiServer : Got message from Alexa on pi "+bean);
+		System.out.println("PiServer : Got message from Alexa on pi " + bean);
 		if (isConnected()) {
-			System.out.println("PiServer : Connected state "+bean);
-			
-			
+			System.out.println("PiServer : Connected state " + bean);
+
 			BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
-			BufferedReader readerPi = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
-			
+
 			System.out.println("PiServer :  Stream initiated");
 			ObjectMapper mapper = new ObjectMapper();
 			System.out.println(mapper.writeValueAsString(bean) + "\n\r");
 			writerPi.write(mapper.writeValueAsString(bean) + "\n\r");
 			System.out.println("PiServer :  Completed writting to Pi");
-			String responseFromPi = readerPi.readLine();
-			MessageBean beanPi = mapper.readValue(responseFromPi, MessageBean.class);
-			return beanPi;
+
+			// MessageBean beanPi = mapper.readValue(responseFromPi, MessageBean.class);
+			return bean;
 		} else {
-			System.out.println("PiServer : disconnected state "+bean);
+			System.out.println("PiServer : disconnected state " + bean);
 			bean.setOutMSG("PiServer : Pi is not connected!");
 			return bean;
 		}
