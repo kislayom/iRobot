@@ -28,7 +28,7 @@ public class StartAutomatic implements RequestHandler {
 
     @Override
     public boolean canHandle(HandlerInput input) {
-        return input.matches(intentName("HelloWorldIntent"));
+        return input.matches(intentName("StartAutomatic"));
     }
 
     @Override

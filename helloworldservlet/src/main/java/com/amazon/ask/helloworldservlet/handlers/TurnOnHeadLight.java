@@ -28,7 +28,7 @@ public class TurnOnHeadLight implements RequestHandler {
 
     @Override
     public boolean canHandle(HandlerInput input) {
-        return input.matches(intentName("HelloWorldIntent"));
+        return input.matches(intentName("TurnOnHeadLight"));
     }
 
     @Override

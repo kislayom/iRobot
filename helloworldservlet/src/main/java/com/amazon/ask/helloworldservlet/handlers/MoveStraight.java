@@ -22,12 +22,18 @@ import com.factory.iot.SendMessageToAlexa;
 import java.io.IOException;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static com.amazon.ask.request.Predicates.intentName;
 
 public class MoveStraight implements RequestHandler {
 
+	private static final Logger logger = LoggerFactory.getLogger(MoveStraight.class);
 	@Override
 	public boolean canHandle(HandlerInput input) {
+		//logger.error(input.getRequest().toString());
+		//return true;
 		return input.matches(intentName("MoveStraight"));
 	}
 
