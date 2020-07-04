@@ -216,7 +216,7 @@ def turnLeft():
     gpio.output(IN4,True)
     gpio.output(ENA,True)
     gpio.output(ENB,True)
-    time.sleep(.5)
+    time.sleep(.7)
     halt()
     
 def turnRight():
@@ -227,7 +227,7 @@ def turnRight():
     gpio.output(IN3,True)
     gpio.output(ENA,True)
     gpio.output(ENB,True)
-    time.sleep(.5)
+    time.sleep(.7)
     halt()
 
 
@@ -252,7 +252,9 @@ def run():
     count=0
     time1=0
     global distance
-    while True:
+    global GLOBAL_STOP
+    GLOBAL_STOP=True
+    while GLOBAL_STOP:
         if distance>MIN_DIST :
             moveStraight()
             time.sleep(0.05)
@@ -260,7 +262,7 @@ def run():
             #print("Distance",distance)
         else:
             halt()
-            headlightOn()
+            #headlightOn()
             #Check left
             print("Right turn")
             turnSensorByDegree(3)
@@ -293,7 +295,7 @@ def run():
                 print("turn right")
                 turnRight()
             time.sleep(0.5)
-            headlightOff()
+            
 
 # camera = PiCamera()
 # camera.start_preview(alpha=200)

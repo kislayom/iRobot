@@ -30,10 +30,11 @@ import static com.amazon.ask.request.Predicates.intentName;
 public class MoveStraight implements RequestHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(MoveStraight.class);
+
 	@Override
 	public boolean canHandle(HandlerInput input) {
-		//logger.error(input.getRequest().toString());
-		//return true;
+		// logger.error(input.getRequest().toString());
+		// return true;
 		return input.matches(intentName("MoveStraight"));
 	}
 
@@ -51,6 +52,10 @@ public class MoveStraight implements RequestHandler {
 			e.printStackTrace();
 		}
 		
-		return input.getResponseBuilder().withSpeech(speechText).withSimpleCard("MoveStraight", speechText).build();
+		return input.getResponseBuilder()
+				.withSpeech(speechText)
+				.withSimpleCard("MoveStraight", speechText)
+				.withReprompt(speechText)
+				.build();
 	}
 }

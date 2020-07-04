@@ -4,7 +4,7 @@ import iRobot as bot
 import time
 import _thread
 
-HOST = '192.168.0.108'  # The server's hostname or IP address
+HOST = 'anilexa.com'  # The server's hostname or IP address
 PORT = 11001        # The port used by the server
 
 MV='MV'
@@ -35,6 +35,12 @@ STOPALL='STOPALL'
 EXITBOT='EXITBOT'
 
 
+def sendMessage(s:socket.socket ,status,outMsg):
+    json_repon=f'{"action":"PI_RESPONSE","timeStamp":{},"value":"{}","outMSG":"{}"}'.format(str(time.time()),status,outMsg)
+    s.send(jsonData+'\n')
+    
+    
+
 #Dummy json data
 #{"action":"","timeStamp":1592130955041,"value":"","outDist":"20","outTemp":"","outHumid":""}
 
@@ -62,25 +68,42 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         
         if command==MV:
             print('Move straight till obstacle is detected')
-        elif command==MVS:
-            print('Move straight untill obstable is detected or x seconds elapsed')
-            duration=jsonData["value"]
-            print(" Duration=",duration)
-            intdur=int(duration)
+            intdur=3
             thread3=_thread.start_new_thread(bot.moveStraightDur,(intdur,))
+            sendMessage(s,'success','moving ahead')
+        elif command==MVS:
+           
             #bot.moveStraightDur(int(duration))
         elif command==MVSO:
             print(command)
         elif command==MVL:
             print(command)
+            print('Turnign left ')
+            
+            thread3=_thread.start_new_thread(bot.turnLeft,())
+            sendMessage(s,'success','turning left')
+            
         elif command==MVR:
             print(command)
+            print('Turnign left ')
+            thread3=_thread.start_new_thread(bot.turnRight,())
+            sendMessage(s,'success','turning right')
+            
         elif command==MVB:
             print(command)
+            print('moving back ')
+            thread3=_thread.start_new_thread(bot.aboutTurn,())
+            sendMessage(s,'success','Turning Back')
         elif command==FDF:
             print(command)
+            print('Finding distance ')
+            bot.turnSensorByDegree(7)
+            time.sleep(0.3)
+            sendMessage(s,'success',str(bot.distance))
+            
         elif command==FDL:
             print(command)
+
         elif command==FDR:
             print(command)
         elif command==FDHL:
@@ -89,8 +112,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print(command)
         elif command==HON:
             print(command)
+            bot.headlightOn()
+            sendMessage(s,'success','head light is on')
+            
         elif command==HOFF:
             print(command)
+            bot.headlightOff()
+            sendMessage(s,'success','head light is off')
         elif command==HONDUR:
             print(command)
         elif command==HOFFDUR:
@@ -107,6 +135,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print(command)
         elif command==STARTAUTO:
             print(command)
+            print('starting auto')
+            thread3=_thread.start_new_thread(bot.run,())
+            sendMessage(s,'success','starting automatic')
         elif command==STOPAUTO:
             print(command)
         elif command==DANCESTART:
@@ -115,6 +146,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print(command)
         elif command==STOPALL:
             print(command)
+            bot.GLOBAL_STOP=False
+            
+            sendMessage(s,'success','stopping all')
         elif command==EXITBOT:
             print(command)
             
