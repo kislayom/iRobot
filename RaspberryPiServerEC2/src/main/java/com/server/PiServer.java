@@ -42,7 +42,7 @@ public class PiServer implements Runnable {
 				BufferedReader readerPi = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
 				BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
 				for(int i=0;i<10000;i++) {
-				writerPi.write("hello Pi! \n");
+				writerPi.write("hello Pi!"+i+ " \n");
 				writerPi.flush();
 				Thread.sleep(2000);
 				}
