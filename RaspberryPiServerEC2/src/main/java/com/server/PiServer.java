@@ -20,6 +20,9 @@ public class PiServer implements Runnable {
 	private AlexaServer alexaServ;
 	private String OUTPUT;
 
+	BufferedReader readerPi;
+	BufferedWriter writerPi;
+
 	public PiServer() throws IOException {
 		this.listenerPi = new ServerSocket(11001);
 		OUTPUT = "NA";
@@ -30,7 +33,11 @@ public class PiServer implements Runnable {
 	}
 
 	public boolean isConnected() {
-		return (socketPi != null) ? true : false;
+		try {
+			return (readerPi != null && readerPi.ready()) ? true : false;
+		} catch (Exception exc) {
+			return false;
+		}
 	}
 
 	@Override
@@ -39,19 +46,15 @@ public class PiServer implements Runnable {
 			try {
 				socketPi = listenerPi.accept();
 				System.out.println("Pi Connected!!");
-				BufferedReader readerPi = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
-				BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
-				for(int i=0;i<10000;i++) {
-				writerPi.write("hello Pi!"+i+ " \n");
-				writerPi.flush();
-				Thread.sleep(2000);
-				}
-				//writerPi.newLine();
+				readerPi = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
+				writerPi = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
+
+				// writerPi.newLine();
 				OUTPUT = readerPi.readLine();
 				while (OUTPUT != null) {
 					System.out.println("Pi Server received " + OUTPUT);
+					OUTPUT = readerPi.readLine();
 				}
-				OUTPUT = readerPi.readLine();
 
 				if (OUTPUT == null) {
 					socketPi = null;
@@ -62,11 +65,7 @@ public class PiServer implements Runnable {
 				// TODO Auto-generated catch block
 				socketPi = null;
 
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-
 		}
 	}
 
@@ -74,14 +73,12 @@ public class PiServer implements Runnable {
 		System.out.println("PiServer : Got message from Alexa on pi " + bean);
 		if (isConnected()) {
 			System.out.println("PiServer : Connected state " + bean);
-
-			BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
-
 			System.out.println("PiServer :  Stream initiated");
 			ObjectMapper mapper = new ObjectMapper();
 			System.out.println(mapper.writeValueAsString(bean) + "\n\r");
-			writerPi.write(mapper.writeValueAsString(bean) );
+			writerPi.write(mapper.writeValueAsString(bean));
 			writerPi.newLine();
+			writerPi.flush();
 			System.out.println("PiServer :  Completed writting to Pi");
 
 			// MessageBean beanPi = mapper.readValue(responseFromPi, MessageBean.class);
