@@ -41,7 +41,11 @@ public class PiServer implements Runnable {
 				System.out.println("Pi Connected!!");
 				BufferedReader readerPi = new BufferedReader(new InputStreamReader(socketPi.getInputStream()));
 				BufferedWriter writerPi = new BufferedWriter(new OutputStreamWriter(socketPi.getOutputStream()));
+				for(int i=0;i<10000;i++) {
 				writerPi.write("hello Pi! \n");
+				writerPi.flush();
+				Thread.sleep(2000);
+				}
 				//writerPi.newLine();
 				OUTPUT = readerPi.readLine();
 				while (OUTPUT != null) {
@@ -58,6 +62,9 @@ public class PiServer implements Runnable {
 				// TODO Auto-generated catch block
 				socketPi = null;
 
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 		}

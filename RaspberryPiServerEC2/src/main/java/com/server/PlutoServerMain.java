@@ -18,14 +18,16 @@ public class PlutoServerMain {
 		tPi.start();
 		tAlexa.start();
 		
-		while(true) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			tPi.join();
+			tAlexa.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
+		System.out.println("Quitting Program");
 		
 	}
 
