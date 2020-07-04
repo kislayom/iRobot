@@ -33,11 +33,15 @@ public class PiServer implements Runnable {
 	}
 
 	public boolean isConnected() {
+		System.out.println("Pi Server : Checking connected");
+		boolean status = false;
 		try {
-			return (readerPi != null && readerPi.ready()) ? true : false;
+			status = (readerPi != null && readerPi.ready()) ? true : false;
 		} catch (Exception exc) {
-			return false;
+
 		}
+		System.out.println("Pi Server status = " + status);
+		return status;
 	}
 
 	@Override

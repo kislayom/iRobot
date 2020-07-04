@@ -51,6 +51,7 @@ public class AlexaServer implements Runnable {
 					readerAlexa.close();
 					socketAlexa.close();
 				}else {
+					System.out.println("Alexa Server: Not connected with Pi");
 					bean.setOutMSG("Pi not connected");
 					// write data to raspberry pi
 					writerAlexa.write(mapper.writeValueAsString(bean) + "\n");
