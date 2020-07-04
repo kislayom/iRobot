@@ -35,11 +35,9 @@ public class PiServer implements Runnable {
 	public boolean isConnected() {
 		System.out.println("Pi Server : Checking connected");
 		boolean status = false;
-		try {
-			status = (readerPi != null && readerPi.ready()) ? true : false;
-		} catch (Exception exc) {
-
-		}
+		
+			status = (readerPi != null) ? true : false;
+		
 		System.out.println("Pi Server status = " + status);
 		return status;
 	}
@@ -68,6 +66,15 @@ public class PiServer implements Runnable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				socketPi = null;
+				try {
+					readerPi.close();
+					writerPi.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				readerPi = null;
+				writerPi = null;
 
 			}
 		}
