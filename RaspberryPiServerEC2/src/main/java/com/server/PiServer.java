@@ -83,6 +83,7 @@ public class PiServer implements Runnable {
 	public MessageBean talkwithPi(MessageBean bean) throws IOException {
 		System.out.println("PiServer : Got message from Alexa on pi " + bean);
 		if (isConnected()) {
+			OUTPUT="NA";
 			System.out.println("PiServer : Connected state " + bean);
 			System.out.println("PiServer :  Stream initiated");
 			ObjectMapper mapper = new ObjectMapper();
