@@ -92,7 +92,7 @@ public class PiServer implements Runnable {
 			writerPi.flush();
 			System.out.println("PiServer :  Completed writting to Pi");
 
-			if(OUTPUT!=null && OUTPUT.equalsIgnoreCase("NA")) {
+			if(OUTPUT!=null && !OUTPUT.equalsIgnoreCase("NA")) {
 				bean=mapper.readValue(OUTPUT, MessageBean.class);
 				OUTPUT="NA";
 			}
